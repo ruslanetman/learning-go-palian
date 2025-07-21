@@ -2,46 +2,44 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 )
 
-// This program calculates the minimum, average, and maximum of a list of numbers
-
 func main() {
-	fmt.Println("Enter numbers separated by spaces:")
-	var input string
-	fmt.Scanln(&input)
-
-	parts := strings.Fields(input)
-	if len(parts) == 0 {
-		fmt.Println("No numbers entered.")
+	var num1, num2, num3 float64
+	fmt.Println("Enter three numbers via space:")
+	fmt.Scanf("%f %f %f", &num1, &num2, &num3)
+	if num1 == num2 && num2 == num3 {
+		fmt.Println("All numbers are equal.")
 		return
 	}
-
-	numbers := make([]float64, 0, len(parts))
-	for _, p := range parts {
-		num, err := strconv.ParseFloat(p, 64)
-		if err != nil {
-			fmt.Printf("Invalid number: %s\n", p)
-			return
+	fmt.Printf("Minimum: %.2f\n", min(num1, num2, num3))
+	fmt.Printf("Average: %.2f\n", avg(num1, num2, num3))
+	fmt.Printf("Maximum: %.2f\n", max(num1, num2, num3))
+}
+func min(a, b, c float64) float64 {
+	if a < b {
+		if a < c {
+			return a
 		}
-		numbers = append(numbers, num)
+		return c
 	}
-
-	min, max, sum := numbers[0], numbers[0], 0.0
-	for _, n := range numbers {
-		if n < min {
-			min = n
-		}
-		if n > max {
-			max = n
-		}
-		sum += n
+	if b < c {
+		return b
 	}
-	avg := sum / float64(len(numbers))
-
-	fmt.Printf("Minimum: %.2f\n", min)
-	fmt.Printf("Average: %.2f\n", avg)
-	fmt.Printf("Maximum: %.2f\n", max)
+	return c
+}
+func avg(a, b, c float64) float64 {
+	return float64(a+b+c) / 3.0
+}
+func max(a, b, c float64) float64 {
+	if a > b {
+		if a > c {
+			return a
+		}
+		return c
+	}
+	if b > c {
+		return b
+	}
+	return c
 }
