@@ -5,41 +5,50 @@ import (
 )
 
 func main() {
-	var num1, num2, num3 float64
-	fmt.Println("Enter three numbers via space:")
-	fmt.Scanf("%f %f %f", &num1, &num2, &num3)
-	if num1 == num2 && num2 == num3 {
-		fmt.Println("All numbers are equal.")
+	fmt.Println("Enter numbers separated by space (press Ctrl+D on Linux/Mac or Ctrl+Z on Windows when done):")
+	var nums []float64
+	for {
+		var x float64
+		n, err := fmt.Scan(&x)
+		if n == 0 || err != nil {
+			break
+		}
+		nums = append(nums, x)
+	}
+	if len(nums) < 2 {
+		fmt.Println("Enter at least 2 numbers.")
 		return
 	}
-	fmt.Printf("Minimum: %.2f\n", min(num1, num2, num3))
-	fmt.Printf("Average: %.2f\n", avg(num1, num2, num3))
-	fmt.Printf("Maximum: %.2f\n", max(num1, num2, num3))
+
+	fmt.Printf("Minimum: %.2f\n", min(nums...))
+	fmt.Printf("Average: %.2f\n", avg(nums...))
+	fmt.Printf("Maximum: %.2f\n", max(nums...))
 }
-func min(a, b, c float64) float64 {
-	if a < b {
-		if a < c {
-			return a
+
+func min(nums ...float64) float64 {
+	m := nums[0]
+	for _, v := range nums[1:] {
+		if v < m {
+			m = v
 		}
-		return c
 	}
-	if b < c {
-		return b
+	return m
+}
+
+func avg(nums ...float64) float64 {
+	sum := 0.0
+	for _, v := range nums {
+		sum += v
 	}
-	return c
+	return sum / float64(len(nums))
 }
-func avg(a, b, c float64) float64 {
-	return float64(a+b+c) / 3.0
-}
-func max(a, b, c float64) float64 {
-	if a > b {
-		if a > c {
-			return a
+
+func max(nums ...float64) float64 {
+	m := nums[0]
+	for _, v := range nums[1:] {
+		if v > m {
+			m = v
 		}
-		return c
 	}
-	if b > c {
-		return b
-	}
-	return c
+	return m
 }
